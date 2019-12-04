@@ -1,0 +1,69 @@
+// Ssince there is no login authentication set up we pass in the auth token 
+// obtained by the POST request manually to the HEADER of the GET request.
+// 
+// to test this: 
+// - obtain the JWT ACCESS TOKEN, you have 30s to paste it into the GET 
+// posts request
+// - before ACCESS TOKEN has expired obtain a REFRESH TOKEN via refresh TOKEN route
+// - you have 30s access again to the GET route
+
+// I. GET POSTS
+// A-for John via server1, to check server2 just change port to 3300
+GET http://localhost:3300/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1NzU0ODIwODIsImV4cCI6MTU3NTQ4MjExMn0.bRXe8T055YYK8Xr29M04LYHTnxL5UXcen1EbwsRblqc
+###
+
+// B-get posts for Bob
+GET http://localhost:3000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiQm9iIEJ1aWxkZXIiLCJpYXQiOjE1NzU0ODE2NDEsImV4cCI6MTU3NTQ4MTY1Nn0.H1sxeVAwMCxY4u0IvSDnRINwde19gYaVk98rnjb-3wU
+###
+
+// C-get posts for Eric
+GET http://localhost:3000/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1NzU0ODI5NTR9.72_4SgKCiCh39HR6WumiGn01MrTn-rx-l5m3guGVHcw
+###
+
+// II. obtain REFRESHTOKEN on authServer:3500
+POST http://localhost:3500/token
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1NzU0ODI5NTR9.72_4SgKCiCh39HR6WumiGn01MrTn-rx-l5m3guGVHcw"
+}
+###
+
+// III. DELETE TOKEN UPON LOGOUT, use refreshToken
+DELETE http://localhost:3500/logout
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSm9obiBEb2UiLCJpYXQiOjE1NzU0ODMwOTZ9.LBP0-YaN5TLKBrFevinRsYXKfivB6dTPconyC4TUZOA"
+}
+
+
+###
+
+// IV. obtain JWT ACCESS TOKEN for each user on authServer:3500
+POST http://localhost:3500/login
+Content-Type: application/json
+
+{
+    "username": "John Doe"
+}
+
+###
+
+POST http://localhost:3500/login
+Content-Type: application/json
+
+{
+    "username": "Bob Builder"
+}
+
+###
+POST http://localhost:3500/login
+Content-Type: application/json
+
+{
+    "username": "Eric Eater"
+}
