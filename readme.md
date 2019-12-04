@@ -9,7 +9,7 @@ There are three different servers:
 - VS CODE with REST Client for testing.
 - the JWT access tokens can be tested through the request.rest file
 - Nodemon 
-    npm run startServer1
-    npm run startServer2
-    npm run authServer
+    - npm run startServer1
+    - npm run startServer2
+    - npm run authServer
 - check the JWT token accross two different servers    
